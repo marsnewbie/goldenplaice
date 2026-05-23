@@ -1,3 +1,7 @@
+import { lookupUkPostcode, resolveDeliveryLocation } from "@/lib/uk-postcode";
+
+export { lookupUkPostcode, resolveDeliveryLocation };
+
 const EARTH_RADIUS_MILES = 3958.8;
 
 export function haversineMiles(
@@ -16,45 +20,33 @@ export function haversineMiles(
   return EARTH_RADIUS_MILES * c;
 }
 
-export interface PostcodeResult {
-  lat: number;
-  lng: number;
-  postcode: string;
-}
-
-export async function lookupUkPostcode(postcode: string): Promise<PostcodeResult | null> {
-  const normalized = postcode.replace(/\s+/g, " ").trim().toUpperCase();
-  const encoded = encodeURIComponent(normalized);
-
+/** Driving distance via OSRM (free public instance). Falls back to haversine. */
+export async function drivingDistanceMiles(
+  lat1: number,
+  lng1: number,
+  lat2: number,
+  lng2: number
+): Promise<{ miles: number; method: "driving" | "straight" }> {
   try {
-    const res = await fetch(`https://api.postcodes.io/postcodes/${encoded}`, {
-      next: { revalidate: 86400 },
-    });
-    if (!res.ok) {
-      const bulk = await fetch("https://api.postcodes.io/postcodes", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ postcodes: [normalized] }),
-      });
-      if (!bulk.ok) return null;
-      const bulkData = (await bulk.json()) as {
-        result: Array<{ result: { latitude: number; longitude: number; postcode: string } | null }>;
+    const url = `https://router.project-osrm.org/route/v1/driving/${lng1},${lat1};${lng2},${lat2}?overview=false`;
+    const res = await fetch(url, { cache: "no-store" });
+    if (res.ok) {
+      const data = (await res.json()) as {
+        code: string;
+        routes?: Array<{ distance: number }>;
       };
-      const first = bulkData.result?.[0]?.result;
-      if (!first) return null;
-      return { lat: first.latitude, lng: first.longitude, postcode: first.postcode };
+      if (data.code === "Ok" && data.routes?.[0]) {
+        const miles = data.routes[0].distance / 1609.344;
+        return { miles, method: "driving" };
+      }
     }
-    const data = (await res.json()) as {
-      result: { latitude: number; longitude: number; postcode: string };
-    };
-    return {
-      lat: data.result.latitude,
-      lng: data.result.longitude,
-      postcode: data.result.postcode,
-    };
   } catch {
-    return null;
+    // fallback below
   }
+  return {
+    miles: haversineMiles(lat1, lng1, lat2, lng2),
+    method: "straight",
+  };
 }
 
 export function calculateDeliveryFee(
@@ -62,21 +54,23 @@ export function calculateDeliveryFee(
   tiers: { maxMiles: number; fee: number }[],
   maxMiles: number
 ): { fee: number; available: boolean; message: string } {
-  if (miles > maxMiles) {
+  const rounded = Math.round(miles * 10) / 10;
+
+  if (rounded > maxMiles) {
     return {
       fee: 0,
       available: false,
-      message: `Sorry, we only deliver within ${maxMiles} miles. Please choose collection instead.`,
+      message: `Sorry, we only deliver within ${maxMiles} miles (you are ${rounded.toFixed(1)} miles away). Please choose collection.`,
     };
   }
 
   const sorted = [...tiers].sort((a, b) => a.maxMiles - b.maxMiles);
   for (const tier of sorted) {
-    if (miles <= tier.maxMiles) {
+    if (rounded <= tier.maxMiles) {
       return {
         fee: tier.fee,
         available: true,
-        message: `Delivery available — ${miles.toFixed(1)} miles (£${tier.fee.toFixed(2)} fee)`,
+        message: `Delivery available — ${rounded.toFixed(1)} miles by road (£${tier.fee.toFixed(2)} delivery fee)`,
       };
     }
   }

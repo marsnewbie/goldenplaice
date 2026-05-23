@@ -1,0 +1,1299 @@
+{
+  "settings": {
+    "name": "Golden Plaice Fish & Chips",
+    "phone": "01722 341 351",
+    "email": "orders@goldenplaice.co.uk",
+    "address": "2 Rhodes Moorhouse Way, Longhedge, Salisbury",
+    "postcode": "SP4 6SA",
+    "lat": 51.1652,
+    "lng": -1.7534,
+    "deliveryTiers": [
+      {
+        "maxMiles": 1,
+        "fee": 1
+      },
+      {
+        "maxMiles": 3,
+        "fee": 2
+      }
+    ],
+    "maxDeliveryMiles": 3,
+    "minOrderDelivery": 0,
+    "minOrderCollection": 0,
+    "cardPaymentsEnabled": true,
+    "stripePlaceholder": true,
+    "openingHours": {
+      "monday": {
+        "slots": [
+          {
+            "open": "10:30",
+            "close": "13:30"
+          },
+          {
+            "open": "16:30",
+            "close": "21:30"
+          }
+        ]
+      },
+      "tuesday": {
+        "slots": [
+          {
+            "open": "10:30",
+            "close": "13:30"
+          },
+          {
+            "open": "16:30",
+            "close": "21:30"
+          }
+        ]
+      },
+      "wednesday": {
+        "slots": [
+          {
+            "open": "10:30",
+            "close": "13:30"
+          },
+          {
+            "open": "16:30",
+            "close": "21:30"
+          }
+        ]
+      },
+      "thursday": {
+        "slots": [
+          {
+            "open": "10:30",
+            "close": "13:30"
+          },
+          {
+            "open": "16:30",
+            "close": "21:30"
+          }
+        ]
+      },
+      "friday": {
+        "slots": [
+          {
+            "open": "10:30",
+            "close": "13:30"
+          },
+          {
+            "open": "16:30",
+            "close": "22:00"
+          }
+        ]
+      },
+      "saturday": {
+        "slots": [
+          {
+            "open": "10:30",
+            "close": "13:30"
+          },
+          {
+            "open": "16:30",
+            "close": "22:00"
+          }
+        ]
+      },
+      "sunday": {
+        "closed": true
+      }
+    }
+  },
+  "categories": [
+    {
+      "id": "fish",
+      "name": "Fish",
+      "sortOrder": 1
+    },
+    {
+      "id": "pukka-pies",
+      "name": "Pukka Pies",
+      "sortOrder": 2,
+      "description": "All £4.50"
+    },
+    {
+      "id": "sausage",
+      "name": "Sausage",
+      "sortOrder": 3
+    },
+    {
+      "id": "chicken",
+      "name": "Southern Fried Chicken",
+      "sortOrder": 4
+    },
+    {
+      "id": "burgers",
+      "name": "Burgers",
+      "sortOrder": 5,
+      "description": "All served with sauce & salad"
+    },
+    {
+      "id": "specials",
+      "name": "Specials",
+      "sortOrder": 6
+    },
+    {
+      "id": "kids",
+      "name": "Kids Meals",
+      "sortOrder": 7,
+      "description": "Includes chips & a drink"
+    },
+    {
+      "id": "lunch",
+      "name": "Lunch Special",
+      "sortOrder": 8,
+      "description": "Mon–Sat 10:30am–1:30pm"
+    },
+    {
+      "id": "sides",
+      "name": "Sides",
+      "sortOrder": 9
+    },
+    {
+      "id": "drinks",
+      "name": "Drinks",
+      "sortOrder": 10
+    }
+  ],
+  "items": [
+    {
+      "id": "fish-regular-cod",
+      "categoryId": "fish",
+      "name": "Regular Cod",
+      "price": 7.8,
+      "available": true
+    },
+    {
+      "id": "fish-large-cod",
+      "categoryId": "fish",
+      "name": "Large Cod",
+      "price": 9.2,
+      "available": true
+    },
+    {
+      "id": "fish-haddock",
+      "categoryId": "fish",
+      "name": "Haddock",
+      "price": 9.8,
+      "available": true
+    },
+    {
+      "id": "fish-plaice",
+      "categoryId": "fish",
+      "name": "Plaice",
+      "price": 8.8,
+      "available": true
+    },
+    {
+      "id": "fish-bites",
+      "categoryId": "fish",
+      "name": "Fish Bite (3 pieces)",
+      "price": 5.7,
+      "available": true
+    },
+    {
+      "id": "pie-chicken-mushroom",
+      "categoryId": "pukka-pies",
+      "name": "Chicken and Mushroom",
+      "price": 4.5,
+      "available": true,
+      "modifiers": [
+        {
+          "id": "pie-options",
+          "name": "Pie options",
+          "type": "multi",
+          "required": false,
+          "options": [
+            {
+              "id": "no-onion",
+              "label": "No onion"
+            },
+            {
+              "id": "no-spicy",
+              "label": "No spicy"
+            },
+            {
+              "id": "with-sauce",
+              "label": "With sauce"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "pie-steak-kidney",
+      "categoryId": "pukka-pies",
+      "name": "Steak and Kidney",
+      "price": 4.5,
+      "available": true,
+      "modifiers": [
+        {
+          "id": "pie-options",
+          "name": "Pie options",
+          "type": "multi",
+          "required": false,
+          "options": [
+            {
+              "id": "no-onion",
+              "label": "No onion"
+            },
+            {
+              "id": "no-spicy",
+              "label": "No spicy"
+            },
+            {
+              "id": "with-sauce",
+              "label": "With sauce"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "pie-beef-onion",
+      "categoryId": "pukka-pies",
+      "name": "Beef and Onion",
+      "price": 4.5,
+      "available": true,
+      "modifiers": [
+        {
+          "id": "pie-options",
+          "name": "Pie options",
+          "type": "multi",
+          "required": false,
+          "options": [
+            {
+              "id": "no-onion",
+              "label": "No onion"
+            },
+            {
+              "id": "no-spicy",
+              "label": "No spicy"
+            },
+            {
+              "id": "with-sauce",
+              "label": "With sauce"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "sausage-small",
+      "categoryId": "sausage",
+      "name": "Small",
+      "price": 1.6,
+      "available": true
+    },
+    {
+      "id": "sausage-large",
+      "categoryId": "sausage",
+      "name": "Large",
+      "price": 2.6,
+      "available": true
+    },
+    {
+      "id": "sausage-small-battered",
+      "categoryId": "sausage",
+      "name": "Small Battered",
+      "price": 1.8,
+      "available": true
+    },
+    {
+      "id": "sausage-large-battered",
+      "categoryId": "sausage",
+      "name": "Large Battered",
+      "price": 2.6,
+      "available": true
+    },
+    {
+      "id": "sausage-saveloy",
+      "categoryId": "sausage",
+      "name": "Saveloy",
+      "price": 2.6,
+      "available": true
+    },
+    {
+      "id": "chicken-1",
+      "categoryId": "chicken",
+      "name": "1 piece",
+      "price": 2.5,
+      "available": true
+    },
+    {
+      "id": "chicken-2",
+      "categoryId": "chicken",
+      "name": "2 pieces (includes chips)",
+      "price": 7.2,
+      "available": true
+    },
+    {
+      "id": "chicken-3",
+      "categoryId": "chicken",
+      "name": "3 pieces (includes chips)",
+      "price": 9.2,
+      "available": true
+    },
+    {
+      "id": "burger-quarter",
+      "categoryId": "burgers",
+      "name": "1/4 Pounder",
+      "price": 4.8,
+      "available": true,
+      "modifiers": [
+        {
+          "id": "sauce",
+          "name": "Choose your sauce",
+          "type": "single",
+          "required": true,
+          "options": [
+            {
+              "id": "ketchup",
+              "label": "Ketchup"
+            },
+            {
+              "id": "mayo",
+              "label": "Mayonnaise"
+            },
+            {
+              "id": "bbq",
+              "label": "BBQ Sauce"
+            },
+            {
+              "id": "curry",
+              "label": "Curry Sauce"
+            },
+            {
+              "id": "gravy",
+              "label": "Gravy"
+            },
+            {
+              "id": "no-sauce",
+              "label": "No sauce"
+            }
+          ]
+        },
+        {
+          "id": "salad",
+          "name": "Salad",
+          "type": "single",
+          "required": false,
+          "options": [
+            {
+              "id": "lettuce",
+              "label": "Lettuce"
+            },
+            {
+              "id": "tomato",
+              "label": "Tomato"
+            },
+            {
+              "id": "onion",
+              "label": "Onion"
+            },
+            {
+              "id": "no-salad",
+              "label": "No salad"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "burger-quarter-cheese",
+      "categoryId": "burgers",
+      "name": "1/4 Pounder with Cheese",
+      "price": 5,
+      "available": true,
+      "modifiers": [
+        {
+          "id": "sauce",
+          "name": "Choose your sauce",
+          "type": "single",
+          "required": true,
+          "options": [
+            {
+              "id": "ketchup",
+              "label": "Ketchup"
+            },
+            {
+              "id": "mayo",
+              "label": "Mayonnaise"
+            },
+            {
+              "id": "bbq",
+              "label": "BBQ Sauce"
+            },
+            {
+              "id": "curry",
+              "label": "Curry Sauce"
+            },
+            {
+              "id": "gravy",
+              "label": "Gravy"
+            },
+            {
+              "id": "no-sauce",
+              "label": "No sauce"
+            }
+          ]
+        },
+        {
+          "id": "salad",
+          "name": "Salad",
+          "type": "single",
+          "required": false,
+          "options": [
+            {
+              "id": "lettuce",
+              "label": "Lettuce"
+            },
+            {
+              "id": "tomato",
+              "label": "Tomato"
+            },
+            {
+              "id": "onion",
+              "label": "Onion"
+            },
+            {
+              "id": "no-salad",
+              "label": "No salad"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "burger-half",
+      "categoryId": "burgers",
+      "name": "1/2 Pounder",
+      "price": 6.5,
+      "available": true,
+      "modifiers": [
+        {
+          "id": "sauce",
+          "name": "Choose your sauce",
+          "type": "single",
+          "required": true,
+          "options": [
+            {
+              "id": "ketchup",
+              "label": "Ketchup"
+            },
+            {
+              "id": "mayo",
+              "label": "Mayonnaise"
+            },
+            {
+              "id": "bbq",
+              "label": "BBQ Sauce"
+            },
+            {
+              "id": "curry",
+              "label": "Curry Sauce"
+            },
+            {
+              "id": "gravy",
+              "label": "Gravy"
+            },
+            {
+              "id": "no-sauce",
+              "label": "No sauce"
+            }
+          ]
+        },
+        {
+          "id": "salad",
+          "name": "Salad",
+          "type": "single",
+          "required": false,
+          "options": [
+            {
+              "id": "lettuce",
+              "label": "Lettuce"
+            },
+            {
+              "id": "tomato",
+              "label": "Tomato"
+            },
+            {
+              "id": "onion",
+              "label": "Onion"
+            },
+            {
+              "id": "no-salad",
+              "label": "No salad"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "burger-half-cheese",
+      "categoryId": "burgers",
+      "name": "1/2 Pounder with Cheese",
+      "price": 6.7,
+      "available": true,
+      "modifiers": [
+        {
+          "id": "sauce",
+          "name": "Choose your sauce",
+          "type": "single",
+          "required": true,
+          "options": [
+            {
+              "id": "ketchup",
+              "label": "Ketchup"
+            },
+            {
+              "id": "mayo",
+              "label": "Mayonnaise"
+            },
+            {
+              "id": "bbq",
+              "label": "BBQ Sauce"
+            },
+            {
+              "id": "curry",
+              "label": "Curry Sauce"
+            },
+            {
+              "id": "gravy",
+              "label": "Gravy"
+            },
+            {
+              "id": "no-sauce",
+              "label": "No sauce"
+            }
+          ]
+        },
+        {
+          "id": "salad",
+          "name": "Salad",
+          "type": "single",
+          "required": false,
+          "options": [
+            {
+              "id": "lettuce",
+              "label": "Lettuce"
+            },
+            {
+              "id": "tomato",
+              "label": "Tomato"
+            },
+            {
+              "id": "onion",
+              "label": "Onion"
+            },
+            {
+              "id": "no-salad",
+              "label": "No salad"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "burger-chicken",
+      "categoryId": "burgers",
+      "name": "Chicken Burger",
+      "price": 5,
+      "available": true,
+      "modifiers": [
+        {
+          "id": "sauce",
+          "name": "Choose your sauce",
+          "type": "single",
+          "required": true,
+          "options": [
+            {
+              "id": "ketchup",
+              "label": "Ketchup"
+            },
+            {
+              "id": "mayo",
+              "label": "Mayonnaise"
+            },
+            {
+              "id": "bbq",
+              "label": "BBQ Sauce"
+            },
+            {
+              "id": "curry",
+              "label": "Curry Sauce"
+            },
+            {
+              "id": "gravy",
+              "label": "Gravy"
+            },
+            {
+              "id": "no-sauce",
+              "label": "No sauce"
+            }
+          ]
+        },
+        {
+          "id": "salad",
+          "name": "Salad",
+          "type": "single",
+          "required": false,
+          "options": [
+            {
+              "id": "lettuce",
+              "label": "Lettuce"
+            },
+            {
+              "id": "tomato",
+              "label": "Tomato"
+            },
+            {
+              "id": "onion",
+              "label": "Onion"
+            },
+            {
+              "id": "no-salad",
+              "label": "No salad"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "burger-chicken-cheese",
+      "categoryId": "burgers",
+      "name": "Chicken Burger with Cheese",
+      "price": 6.5,
+      "available": true,
+      "modifiers": [
+        {
+          "id": "sauce",
+          "name": "Choose your sauce",
+          "type": "single",
+          "required": true,
+          "options": [
+            {
+              "id": "ketchup",
+              "label": "Ketchup"
+            },
+            {
+              "id": "mayo",
+              "label": "Mayonnaise"
+            },
+            {
+              "id": "bbq",
+              "label": "BBQ Sauce"
+            },
+            {
+              "id": "curry",
+              "label": "Curry Sauce"
+            },
+            {
+              "id": "gravy",
+              "label": "Gravy"
+            },
+            {
+              "id": "no-sauce",
+              "label": "No sauce"
+            }
+          ]
+        },
+        {
+          "id": "salad",
+          "name": "Salad",
+          "type": "single",
+          "required": false,
+          "options": [
+            {
+              "id": "lettuce",
+              "label": "Lettuce"
+            },
+            {
+              "id": "tomato",
+              "label": "Tomato"
+            },
+            {
+              "id": "onion",
+              "label": "Onion"
+            },
+            {
+              "id": "no-salad",
+              "label": "No salad"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "burger-double-chicken",
+      "categoryId": "burgers",
+      "name": "Double Chicken Burger",
+      "price": 6.3,
+      "available": true,
+      "modifiers": [
+        {
+          "id": "sauce",
+          "name": "Choose your sauce",
+          "type": "single",
+          "required": true,
+          "options": [
+            {
+              "id": "ketchup",
+              "label": "Ketchup"
+            },
+            {
+              "id": "mayo",
+              "label": "Mayonnaise"
+            },
+            {
+              "id": "bbq",
+              "label": "BBQ Sauce"
+            },
+            {
+              "id": "curry",
+              "label": "Curry Sauce"
+            },
+            {
+              "id": "gravy",
+              "label": "Gravy"
+            },
+            {
+              "id": "no-sauce",
+              "label": "No sauce"
+            }
+          ]
+        },
+        {
+          "id": "salad",
+          "name": "Salad",
+          "type": "single",
+          "required": false,
+          "options": [
+            {
+              "id": "lettuce",
+              "label": "Lettuce"
+            },
+            {
+              "id": "tomato",
+              "label": "Tomato"
+            },
+            {
+              "id": "onion",
+              "label": "Onion"
+            },
+            {
+              "id": "no-salad",
+              "label": "No salad"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "burger-bacon-chicken",
+      "categoryId": "burgers",
+      "name": "Bacon Chicken Burger",
+      "price": 6.1,
+      "available": true,
+      "modifiers": [
+        {
+          "id": "sauce",
+          "name": "Choose your sauce",
+          "type": "single",
+          "required": true,
+          "options": [
+            {
+              "id": "ketchup",
+              "label": "Ketchup"
+            },
+            {
+              "id": "mayo",
+              "label": "Mayonnaise"
+            },
+            {
+              "id": "bbq",
+              "label": "BBQ Sauce"
+            },
+            {
+              "id": "curry",
+              "label": "Curry Sauce"
+            },
+            {
+              "id": "gravy",
+              "label": "Gravy"
+            },
+            {
+              "id": "no-sauce",
+              "label": "No sauce"
+            }
+          ]
+        },
+        {
+          "id": "salad",
+          "name": "Salad",
+          "type": "single",
+          "required": false,
+          "options": [
+            {
+              "id": "lettuce",
+              "label": "Lettuce"
+            },
+            {
+              "id": "tomato",
+              "label": "Tomato"
+            },
+            {
+              "id": "onion",
+              "label": "Onion"
+            },
+            {
+              "id": "no-salad",
+              "label": "No salad"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "burger-veggie",
+      "categoryId": "burgers",
+      "name": "Veggie Burger",
+      "price": 4,
+      "available": true,
+      "modifiers": [
+        {
+          "id": "sauce",
+          "name": "Choose your sauce",
+          "type": "single",
+          "required": true,
+          "options": [
+            {
+              "id": "ketchup",
+              "label": "Ketchup"
+            },
+            {
+              "id": "mayo",
+              "label": "Mayonnaise"
+            },
+            {
+              "id": "bbq",
+              "label": "BBQ Sauce"
+            },
+            {
+              "id": "curry",
+              "label": "Curry Sauce"
+            },
+            {
+              "id": "gravy",
+              "label": "Gravy"
+            },
+            {
+              "id": "no-sauce",
+              "label": "No sauce"
+            }
+          ]
+        },
+        {
+          "id": "salad",
+          "name": "Salad",
+          "type": "single",
+          "required": false,
+          "options": [
+            {
+              "id": "lettuce",
+              "label": "Lettuce"
+            },
+            {
+              "id": "tomato",
+              "label": "Tomato"
+            },
+            {
+              "id": "onion",
+              "label": "Onion"
+            },
+            {
+              "id": "no-salad",
+              "label": "No salad"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "burger-veggie-cheese",
+      "categoryId": "burgers",
+      "name": "Veggie Burger with Cheese",
+      "price": 4.2,
+      "available": true,
+      "modifiers": [
+        {
+          "id": "sauce",
+          "name": "Choose your sauce",
+          "type": "single",
+          "required": true,
+          "options": [
+            {
+              "id": "ketchup",
+              "label": "Ketchup"
+            },
+            {
+              "id": "mayo",
+              "label": "Mayonnaise"
+            },
+            {
+              "id": "bbq",
+              "label": "BBQ Sauce"
+            },
+            {
+              "id": "curry",
+              "label": "Curry Sauce"
+            },
+            {
+              "id": "gravy",
+              "label": "Gravy"
+            },
+            {
+              "id": "no-sauce",
+              "label": "No sauce"
+            }
+          ]
+        },
+        {
+          "id": "salad",
+          "name": "Salad",
+          "type": "single",
+          "required": false,
+          "options": [
+            {
+              "id": "lettuce",
+              "label": "Lettuce"
+            },
+            {
+              "id": "tomato",
+              "label": "Tomato"
+            },
+            {
+              "id": "onion",
+              "label": "Onion"
+            },
+            {
+              "id": "no-salad",
+              "label": "No salad"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "special-cod-chips-reg",
+      "categoryId": "specials",
+      "name": "Regular Cod and Chips",
+      "price": 10.3,
+      "available": true
+    },
+    {
+      "id": "special-cod-chips-lg",
+      "categoryId": "specials",
+      "name": "Large Cod and Chips",
+      "price": 11.5,
+      "available": true
+    },
+    {
+      "id": "special-beef-chips",
+      "categoryId": "specials",
+      "name": "Beef Burger 1/4 Pounder and Chips",
+      "price": 7.6,
+      "available": true
+    },
+    {
+      "id": "special-chicken-chips",
+      "categoryId": "specials",
+      "name": "Chicken Burger and Chips",
+      "price": 7.8,
+      "available": true
+    },
+    {
+      "id": "kids-sausage",
+      "categoryId": "kids",
+      "name": "Kids Sausage, Chips & Drink",
+      "price": 5.5,
+      "available": true
+    },
+    {
+      "id": "kids-fish-cake",
+      "categoryId": "kids",
+      "name": "Kids Fish Cake Meal",
+      "price": 5.5,
+      "available": true
+    },
+    {
+      "id": "kids-nuggets",
+      "categoryId": "kids",
+      "name": "Kids Chicken Nuggets (4) Meal",
+      "price": 6,
+      "available": true
+    },
+    {
+      "id": "kids-battered-sausage",
+      "categoryId": "kids",
+      "name": "Kids Battered Sausage Meal",
+      "price": 5.8,
+      "available": true
+    },
+    {
+      "id": "lunch-classic",
+      "categoryId": "lunch",
+      "name": "Classic Lunch",
+      "price": 8.6,
+      "available": true,
+      "description": "2 sausages, 2 bacon, fried egg, baked beans & chips. Hot drink included."
+    },
+    {
+      "id": "lunch-veggie",
+      "categoryId": "lunch",
+      "name": "Vegetarian Classic Lunch",
+      "price": 8.2,
+      "available": true,
+      "description": "3 vegan sausages, 2 fried eggs, baked beans & chips. Hot drink included."
+    },
+    {
+      "id": "side-chips-reg",
+      "categoryId": "sides",
+      "name": "Regular Chips",
+      "price": 3,
+      "available": true
+    },
+    {
+      "id": "side-chips-lg",
+      "categoryId": "sides",
+      "name": "Large Chips",
+      "price": 3.8,
+      "available": true
+    },
+    {
+      "id": "side-cheesy-chips",
+      "categoryId": "sides",
+      "name": "Cheesy Chips",
+      "price": 5.6,
+      "available": true
+    },
+    {
+      "id": "side-cheesy-curry",
+      "categoryId": "sides",
+      "name": "Cheesy Chips and Curry Sauce",
+      "price": 6.7,
+      "available": true
+    },
+    {
+      "id": "side-chip-butty",
+      "categoryId": "sides",
+      "name": "Chip Butty",
+      "price": 3,
+      "available": true
+    },
+    {
+      "id": "side-nuggets-6",
+      "categoryId": "sides",
+      "name": "Chicken Nuggets (6 pieces)",
+      "price": 4,
+      "available": true
+    },
+    {
+      "id": "side-nuggets-10",
+      "categoryId": "sides",
+      "name": "Chicken Nuggets (10 pieces)",
+      "price": 5.2,
+      "available": true
+    },
+    {
+      "id": "side-cod-roe",
+      "categoryId": "sides",
+      "name": "Cod Roe",
+      "price": 2.4,
+      "available": true
+    },
+    {
+      "id": "side-scampi",
+      "categoryId": "sides",
+      "name": "Scampi (8 pieces)",
+      "price": 7.5,
+      "available": true
+    },
+    {
+      "id": "side-spam",
+      "categoryId": "sides",
+      "name": "Spam Fritter",
+      "price": 2.2,
+      "available": true
+    },
+    {
+      "id": "side-pineapple",
+      "categoryId": "sides",
+      "name": "Pineapple Fritter",
+      "price": 2,
+      "available": true
+    },
+    {
+      "id": "side-onion-rings",
+      "categoryId": "sides",
+      "name": "Onion Rings (10 pieces)",
+      "price": 4.2,
+      "available": true
+    },
+    {
+      "id": "side-curry",
+      "categoryId": "sides",
+      "name": "Curry Sauce",
+      "price": 2.2,
+      "available": true
+    },
+    {
+      "id": "side-beans",
+      "categoryId": "sides",
+      "name": "Baked Beans",
+      "price": 2,
+      "available": true
+    },
+    {
+      "id": "side-peas",
+      "categoryId": "sides",
+      "name": "Mushy Peas",
+      "price": 1.9,
+      "available": true
+    },
+    {
+      "id": "side-roll",
+      "categoryId": "sides",
+      "name": "Bread Roll",
+      "price": 1.1,
+      "available": true
+    },
+    {
+      "id": "side-mars",
+      "categoryId": "sides",
+      "name": "Battered Mars Bar",
+      "price": 2.2,
+      "available": true
+    },
+    {
+      "id": "side-gherkin",
+      "categoryId": "sides",
+      "name": "Pickled Gherkin",
+      "price": 1.1,
+      "available": true
+    },
+    {
+      "id": "side-egg",
+      "categoryId": "sides",
+      "name": "Pickled Egg",
+      "price": 1,
+      "available": true
+    },
+    {
+      "id": "drink-can",
+      "categoryId": "drinks",
+      "name": "Can (Rio, Coke, Diet Coke, Fanta Orange)",
+      "price": 1.4,
+      "available": true
+    },
+    {
+      "id": "drink-bottle",
+      "categoryId": "drinks",
+      "name": "Bottle (1.5 litre)",
+      "price": 2.9,
+      "available": true
+    },
+    {
+      "id": "drink-water",
+      "categoryId": "drinks",
+      "name": "Water (500ml)",
+      "price": 1.3,
+      "available": true
+    }
+  ],
+  "orders": [
+    {
+      "id": "ord_1779534291801_sbtga5r",
+      "createdAt": "2026-05-23T11:04:51.801Z",
+      "status": "pending",
+      "fulfillment": "collection",
+      "paymentMethod": "cash",
+      "paymentStatus": "pending",
+      "customer": {
+        "name": "test",
+        "email": "marsnewbie6655@gmail.com",
+        "phone": "0278883823",
+        "isGuest": true
+      },
+      "deliveryFee": 0,
+      "items": [
+        {
+          "id": "line_1779534148173_cx3om",
+          "itemId": "fish-regular-cod",
+          "name": "Regular Cod",
+          "price": 7.8,
+          "quantity": 1,
+          "modifiers": [],
+          "lineTotal": 7.8
+        },
+        {
+          "id": "line_1779534159541_tdjtp",
+          "itemId": "pie-steak-kidney",
+          "name": "Steak and Kidney",
+          "price": 4.5,
+          "quantity": 1,
+          "modifiers": [
+            {
+              "modifierId": "pie-options",
+              "modifierName": "Pie options",
+              "optionIds": [
+                "no-onion",
+                "no-spicy"
+              ],
+              "optionLabels": [
+                "No onion",
+                "No spicy"
+              ]
+            }
+          ],
+          "lineTotal": 4.5
+        },
+        {
+          "id": "line_1779534169071_25q5v",
+          "itemId": "burger-quarter",
+          "name": "1/4 Pounder",
+          "price": 4.8,
+          "quantity": 1,
+          "modifiers": [
+            {
+              "modifierId": "sauce",
+              "modifierName": "Choose your sauce",
+              "optionIds": [
+                "ketchup"
+              ],
+              "optionLabels": [
+                "Ketchup"
+              ]
+            },
+            {
+              "modifierId": "salad",
+              "modifierName": "Salad",
+              "optionIds": [
+                "lettuce"
+              ],
+              "optionLabels": [
+                "Lettuce"
+              ]
+            }
+          ],
+          "lineTotal": 4.8
+        }
+      ],
+      "subtotal": 17.1,
+      "deliveryFeeAmount": 0,
+      "total": 17.1,
+      "notes": ""
+    }
+  ]
+}

@@ -3,9 +3,18 @@ import path from "path";
 import {
   defaultCategories,
   defaultItems,
+  defaultModifierGroups,
   defaultSettings,
 } from "@/data/seed";
-import type { CustomerAccount, MenuCategory, MenuItem, Order, ShopSettings, StoreData } from "@/types";
+import type {
+  CustomerAccount,
+  MenuCategory,
+  MenuItem,
+  ModifierGroup,
+  Order,
+  ShopSettings,
+  StoreData,
+} from "@/types";
 
 const DATA_DIR = path.join(process.cwd(), "data");
 const STORE_FILE = path.join(DATA_DIR, "store.json");
@@ -18,6 +27,7 @@ function defaultStore(): StoreData {
     settings: defaultSettings,
     categories: defaultCategories,
     items: defaultItems,
+    modifierGroups: defaultModifierGroups,
     orders: [],
   };
 }
@@ -38,6 +48,9 @@ export async function readStore(): Promise<StoreData> {
       settings: { ...defaultSettings, ...parsed.settings },
       categories: parsed.categories?.length ? parsed.categories : defaultCategories,
       items: parsed.items?.length ? parsed.items : defaultItems,
+      modifierGroups: parsed.modifierGroups?.length
+        ? parsed.modifierGroups
+        : defaultModifierGroups,
       orders: parsed.orders ?? [],
     };
     return memoryStore;
@@ -79,13 +92,20 @@ export async function getMenuItems(): Promise<MenuItem[]> {
   return store.items;
 }
 
+export async function getModifierGroups(): Promise<ModifierGroup[]> {
+  const store = await readStore();
+  return store.modifierGroups;
+}
+
 export async function saveMenu(
   categories: MenuCategory[],
-  items: MenuItem[]
+  items: MenuItem[],
+  modifierGroups: ModifierGroup[]
 ): Promise<void> {
   const store = await readStore();
   store.categories = categories;
   store.items = items;
+  store.modifierGroups = modifierGroups;
   await writeStore(store);
 }
 

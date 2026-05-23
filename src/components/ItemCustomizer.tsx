@@ -1,34 +1,68 @@
 "use client";
 
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { X } from "lucide-react";
-import type { CartLineModifier, MenuItem, MenuModifier } from "@/types";
+import type { MenuItem, MenuModifier, ModifierGroup } from "@/types";
 import { useCart } from "@/store/cart";
 import { formatPrice } from "@/lib/utils";
+import {
+  buildCartLineModifiers,
+  calculateModifierExtra,
+  flattenModifierTree,
+  getActiveNestedModifiers,
+  resolveItemModifiers,
+  validateModifierSelections,
+} from "@/lib/menu";
 
 interface Props {
   item: MenuItem;
+  modifierGroups: ModifierGroup[];
   onClose: () => void;
 }
 
-export function ItemCustomizer({ item, onClose }: Props) {
+export function ItemCustomizer({ item, modifierGroups, onClose }: Props) {
   const addItem = useCart((s) => s.addItem);
+  const resolvedModifiers = useMemo(
+    () => resolveItemModifiers(item, modifierGroups),
+    [item, modifierGroups]
+  );
+
+  const allModifiers = useMemo(
+    () => flattenModifierTree(resolvedModifiers),
+    [resolvedModifiers]
+  );
+
   const [quantity, setQuantity] = useState(1);
   const [selections, setSelections] = useState<Record<string, string[]>>(() => {
     const init: Record<string, string[]> = {};
-    item.modifiers?.forEach((m) => {
+    allModifiers.forEach((m) => {
       init[m.id] = [];
     });
     return init;
   });
   const [error, setError] = useState("");
 
-  const toggleMulti = (modifierId: string, optionId: string) => {
+  const nestedModifiers = getActiveNestedModifiers(resolvedModifiers, selections);
+  const modifierExtra = calculateModifierExtra(
+    [...resolvedModifiers, ...nestedModifiers],
+    selections
+  );
+  const unitPrice = item.price + modifierExtra;
+  const lineTotal = unitPrice * quantity;
+
+  const toggleMulti = (modifierId: string, optionId: string, mod: MenuModifier) => {
     setSelections((prev) => {
       const current = prev[modifierId] || [];
-      const next = current.includes(optionId)
-        ? current.filter((id) => id !== optionId)
-        : [...current, optionId];
+      let next: string[];
+      if (current.includes(optionId)) {
+        next = current.filter((id) => id !== optionId);
+      } else {
+        const max = mod.maxSelections ?? mod.options.length;
+        next =
+          mod.type === "multi" && current.length >= max
+            ? [...current.slice(1), optionId]
+            : [...current, optionId];
+      }
       return { ...prev, [modifierId]: next };
     });
   };
@@ -37,52 +71,52 @@ export function ItemCustomizer({ item, onClose }: Props) {
     setSelections((prev) => ({ ...prev, [modifierId]: [optionId] }));
   };
 
-  const validate = (): boolean => {
-    for (const mod of item.modifiers || []) {
-      if (mod.required && (!selections[mod.id] || selections[mod.id].length === 0)) {
-        setError(`Please select ${mod.name.toLowerCase()}`);
-        return false;
-      }
-    }
-    setError("");
-    return true;
-  };
-
-  const buildModifiers = (): CartLineModifier[] => {
-    return (item.modifiers || []).map((mod) => {
-      const optionIds = selections[mod.id] || [];
-      const optionLabels = mod.options
-        .filter((o) => optionIds.includes(o.id))
-        .map((o) => o.label);
-      return {
-        modifierId: mod.id,
-        modifierName: mod.name,
-        optionIds,
-        optionLabels,
-      };
-    });
-  };
-
-  const handleAdd = () => {
-    if (!validate()) return;
-    addItem(item, quantity, buildModifiers());
-    onClose();
-    document.dispatchEvent(new CustomEvent("open-cart"));
-  };
-
-  const renderModifier = (mod: MenuModifier) => (
-    <div key={mod.id} className="mb-5">
+  const renderModifier = (mod: MenuModifier, depth = 0) => (
+    <div key={mod.id} className={depth > 0 ? "ml-4 border-l-2 border-brand-blue/30 pl-4" : ""}>
       <p className="label">
         {mod.name}
         {mod.required && <span className="text-brand-orange"> *</span>}
+        {mod.type === "multi" && (
+          <span className="ml-2 text-xs font-normal text-white/40">
+            (choose {mod.minSelections ?? 0}–{mod.maxSelections ?? mod.options.length})
+          </span>
+        )}
       </p>
-      <div className="space-y-2">
+      <div className="mb-4 space-y-2">
         {mod.options.map((opt) => {
           const selected = (selections[mod.id] || []).includes(opt.id);
+          const priceLabel =
+            opt.price && opt.price > 0 ? ` (+${formatPrice(opt.price)})` : "";
+
           if (mod.type === "multi") {
             return (
+              <div key={opt.id}>
+                <label
+                  className={`flex cursor-pointer items-center gap-3 rounded-xl border px-4 py-3 transition ${
+                    selected
+                      ? "border-brand-blue bg-brand-blue/20"
+                      : "border-white/10 hover:border-white/30"
+                  }`}
+                >
+                  <input
+                    type="checkbox"
+                    checked={selected}
+                    onChange={() => toggleMulti(mod.id, opt.id, mod)}
+                    className="h-4 w-4 accent-brand-orange"
+                  />
+                  <span>
+                    {opt.label}
+                    {priceLabel}
+                  </span>
+                </label>
+                {selected && opt.children?.map((child) => renderModifier(child, depth + 1))}
+              </div>
+            );
+          }
+
+          return (
+            <div key={opt.id}>
               <label
-                key={opt.id}
                 className={`flex cursor-pointer items-center gap-3 rounded-xl border px-4 py-3 transition ${
                   selected
                     ? "border-brand-blue bg-brand-blue/20"
@@ -90,38 +124,43 @@ export function ItemCustomizer({ item, onClose }: Props) {
                 }`}
               >
                 <input
-                  type="checkbox"
+                  type="radio"
+                  name={mod.id}
                   checked={selected}
-                  onChange={() => toggleMulti(mod.id, opt.id)}
+                  onChange={() => selectSingle(mod.id, opt.id)}
                   className="h-4 w-4 accent-brand-orange"
                 />
-                <span>{opt.label}</span>
+                <span>
+                  {opt.label}
+                  {priceLabel}
+                </span>
               </label>
-            );
-          }
-          return (
-            <label
-              key={opt.id}
-              className={`flex cursor-pointer items-center gap-3 rounded-xl border px-4 py-3 transition ${
-                selected
-                  ? "border-brand-blue bg-brand-blue/20"
-                  : "border-white/10 hover:border-white/30"
-              }`}
-            >
-              <input
-                type="radio"
-                name={mod.id}
-                checked={selected}
-                onChange={() => selectSingle(mod.id, opt.id)}
-                className="h-4 w-4 accent-brand-orange"
-              />
-              <span>{opt.label}</span>
-            </label>
+              {selected && opt.children?.map((child) => renderModifier(child, depth + 1))}
+            </div>
           );
         })}
       </div>
     </div>
   );
+
+  const handleAdd = () => {
+    const validationError = validateModifierSelections(
+      [...resolvedModifiers, ...getActiveNestedModifiers(resolvedModifiers, selections)],
+      selections
+    );
+    if (validationError) {
+      setError(validationError);
+      return;
+    }
+    setError("");
+    const modifiers = buildCartLineModifiers(
+      [...resolvedModifiers, ...getActiveNestedModifiers(resolvedModifiers, selections)],
+      selections
+    );
+    addItem(item, quantity, modifiers, unitPrice);
+    onClose();
+    document.dispatchEvent(new CustomEvent("open-cart"));
+  };
 
   return (
     <div className="fixed inset-0 z-[80] flex items-end justify-center sm:items-center">
@@ -130,14 +169,19 @@ export function ItemCustomizer({ item, onClose }: Props) {
         <div className="mb-4 flex items-start justify-between">
           <div>
             <h2 className="font-display text-xl font-bold">{item.name}</h2>
-            <p className="text-brand-orange">{formatPrice(item.price)}</p>
+            <p className="text-brand-orange">
+              {formatPrice(item.price)}
+              {modifierExtra > 0 && (
+                <span className="text-sm text-white/50"> + options {formatPrice(modifierExtra)}</span>
+              )}
+            </p>
           </div>
           <button type="button" onClick={onClose} className="rounded-lg p-2 hover:bg-white/10">
             <X className="h-5 w-5" />
           </button>
         </div>
 
-        {item.modifiers?.map(renderModifier)}
+        {resolvedModifiers.map((mod) => renderModifier(mod))}
 
         {error && <p className="mb-3 text-sm text-red-400">{error}</p>}
 
@@ -163,7 +207,7 @@ export function ItemCustomizer({ item, onClose }: Props) {
         </div>
 
         <button type="button" onClick={handleAdd} className="btn-primary w-full">
-          Add {quantity} to basket — {formatPrice(item.price * quantity)}
+          Add {quantity} to basket — {formatPrice(lineTotal)}
         </button>
       </div>
     </div>

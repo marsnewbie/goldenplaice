@@ -1,4 +1,4 @@
-import type { MenuCategory, MenuItem, ShopSettings } from "@/types";
+import type { MenuCategory, MenuItem, ModifierGroup, ShopSettings } from "@/types";
 
 export const SAUCE_MODIFIER_ID = "sauce";
 export const SALAD_MODIFIER_ID = "salad";
@@ -26,32 +26,38 @@ export const pieOptions = [
   { id: "with-sauce", label: "With sauce" },
 ];
 
-const burgerModifiers = [
+export const GRP_SAUCE = "grp-sauce";
+export const GRP_SALAD = "grp-salad";
+export const GRP_PIE = "grp-pie-options";
+
+export const defaultModifierGroups: ModifierGroup[] = [
   {
-    id: SAUCE_MODIFIER_ID,
+    id: GRP_SAUCE,
     name: "Choose your sauce",
-    type: "single" as const,
+    type: "single",
     required: true,
     options: sauceOptions,
   },
   {
-    id: SALAD_MODIFIER_ID,
+    id: GRP_SALAD,
     name: "Salad",
-    type: "single" as const,
+    type: "single",
     required: false,
     options: saladOptions,
   },
-];
-
-const pieModifiers = [
   {
-    id: PIE_OPTIONS_MODIFIER_ID,
+    id: GRP_PIE,
     name: "Pie options",
-    type: "multi" as const,
+    type: "multi",
     required: false,
+    minSelections: 0,
+    maxSelections: 3,
     options: pieOptions,
   },
 ];
+
+const burgerGroupIds = { modifierGroupIds: [GRP_SAUCE, GRP_SALAD] };
+const pieGroupIds = { modifierGroupIds: [GRP_PIE] };
 
 export const defaultSettings: ShopSettings = {
   name: "Golden Plaice Fish & Chips",
@@ -59,8 +65,8 @@ export const defaultSettings: ShopSettings = {
   email: "orders@goldenplaice.co.uk",
   address: "2 Rhodes Moorhouse Way, Longhedge, Salisbury",
   postcode: "SP4 6SA",
-  lat: 51.1652,
-  lng: -1.7534,
+  lat: 51.1545,
+  lng: -1.7088,
   deliveryTiers: [
     { maxMiles: 1, fee: 1 },
     { maxMiles: 3, fee: 2 },
@@ -150,9 +156,9 @@ export const defaultItems: MenuItem[] = [
   item("fish-bites", "fish", "Fish Bite (3 pieces)", 5.7),
 
   // Pukka Pies
-  item("pie-chicken-mushroom", "pukka-pies", "Chicken and Mushroom", 4.5, { modifiers: pieModifiers }),
-  item("pie-steak-kidney", "pukka-pies", "Steak and Kidney", 4.5, { modifiers: pieModifiers }),
-  item("pie-beef-onion", "pukka-pies", "Beef and Onion", 4.5, { modifiers: pieModifiers }),
+  item("pie-chicken-mushroom", "pukka-pies", "Chicken and Mushroom", 4.5, pieGroupIds),
+  item("pie-steak-kidney", "pukka-pies", "Steak and Kidney", 4.5, pieGroupIds),
+  item("pie-beef-onion", "pukka-pies", "Beef and Onion", 4.5, pieGroupIds),
 
   // Sausage
   item("sausage-small", "sausage", "Small", 1.6),
@@ -167,16 +173,16 @@ export const defaultItems: MenuItem[] = [
   item("chicken-3", "chicken", "3 pieces (includes chips)", 9.2),
 
   // Burgers
-  item("burger-quarter", "burgers", "1/4 Pounder", 4.8, { modifiers: burgerModifiers }),
-  item("burger-quarter-cheese", "burgers", "1/4 Pounder with Cheese", 5.0, { modifiers: burgerModifiers }),
-  item("burger-half", "burgers", "1/2 Pounder", 6.5, { modifiers: burgerModifiers }),
-  item("burger-half-cheese", "burgers", "1/2 Pounder with Cheese", 6.7, { modifiers: burgerModifiers }),
-  item("burger-chicken", "burgers", "Chicken Burger", 5.0, { modifiers: burgerModifiers }),
-  item("burger-chicken-cheese", "burgers", "Chicken Burger with Cheese", 6.5, { modifiers: burgerModifiers }),
-  item("burger-double-chicken", "burgers", "Double Chicken Burger", 6.3, { modifiers: burgerModifiers }),
-  item("burger-bacon-chicken", "burgers", "Bacon Chicken Burger", 6.1, { modifiers: burgerModifiers }),
-  item("burger-veggie", "burgers", "Veggie Burger", 4.0, { modifiers: burgerModifiers }),
-  item("burger-veggie-cheese", "burgers", "Veggie Burger with Cheese", 4.2, { modifiers: burgerModifiers }),
+  item("burger-quarter", "burgers", "1/4 Pounder", 4.8, burgerGroupIds),
+  item("burger-quarter-cheese", "burgers", "1/4 Pounder with Cheese", 5.0, burgerGroupIds),
+  item("burger-half", "burgers", "1/2 Pounder", 6.5, burgerGroupIds),
+  item("burger-half-cheese", "burgers", "1/2 Pounder with Cheese", 6.7, burgerGroupIds),
+  item("burger-chicken", "burgers", "Chicken Burger", 5.0, burgerGroupIds),
+  item("burger-chicken-cheese", "burgers", "Chicken Burger with Cheese", 6.5, burgerGroupIds),
+  item("burger-double-chicken", "burgers", "Double Chicken Burger", 6.3, burgerGroupIds),
+  item("burger-bacon-chicken", "burgers", "Bacon Chicken Burger", 6.1, burgerGroupIds),
+  item("burger-veggie", "burgers", "Veggie Burger", 4.0, burgerGroupIds),
+  item("burger-veggie-cheese", "burgers", "Veggie Burger with Cheese", 4.2, burgerGroupIds),
 
   // Specials
   item("special-cod-chips-reg", "specials", "Regular Cod and Chips", 10.3),

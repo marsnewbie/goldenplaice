@@ -3,7 +3,10 @@ export type ModifierType = "single" | "multi" | "boolean";
 export interface ModifierOption {
   id: string;
   label: string;
+  /** Extra charge when this option is selected (per item). */
   price?: number;
+  /** Shown when this option is selected — nested option groups. */
+  children?: MenuModifier[];
 }
 
 export interface MenuModifier {
@@ -11,8 +14,14 @@ export interface MenuModifier {
   name: string;
   type: ModifierType;
   required?: boolean;
+  /** For multi-select: minimum / maximum choices. */
+  minSelections?: number;
+  maxSelections?: number;
   options: ModifierOption[];
 }
+
+/** Reusable option group managed in admin (linked from menu items). */
+export type ModifierGroup = MenuModifier;
 
 export interface MenuItem {
   id: string;
@@ -21,6 +30,9 @@ export interface MenuItem {
   price: number;
   categoryId: string;
   available: boolean;
+  /** Link to global option groups from admin. */
+  modifierGroupIds?: string[];
+  /** Item-specific option groups (inline). */
   modifiers?: MenuModifier[];
   tags?: string[];
 }
@@ -30,6 +42,7 @@ export interface MenuCategory {
   name: string;
   sortOrder: number;
   description?: string;
+  available?: boolean;
 }
 
 export type FulfillmentType = "collection" | "delivery";
@@ -41,6 +54,7 @@ export interface CartLineModifier {
   modifierName: string;
   optionIds: string[];
   optionLabels: string[];
+  extraPrice?: number;
 }
 
 export interface CartLine {
@@ -58,6 +72,8 @@ export interface DeliveryQuote {
   fee: number;
   available: boolean;
   message: string;
+  postcode?: string;
+  resolvedAddress?: string;
 }
 
 export interface TimeSlot {
@@ -118,6 +134,7 @@ export interface StoreData {
   settings: ShopSettings;
   categories: MenuCategory[];
   items: MenuItem[];
+  modifierGroups: ModifierGroup[];
   orders: Order[];
 }
 

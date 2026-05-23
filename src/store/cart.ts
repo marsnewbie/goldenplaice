@@ -20,7 +20,8 @@ interface CartState {
   addItem: (
     item: MenuItem,
     quantity: number,
-    modifiers: CartLineModifier[]
+    modifiers: CartLineModifier[],
+    unitPrice?: number
   ) => void;
   updateQuantity: (lineId: string, quantity: number) => void;
   removeLine: (lineId: string) => void;
@@ -36,9 +37,16 @@ interface CartState {
   itemCount: () => number;
 }
 
-function calcLineTotal(price: number, quantity: number, modifiers: CartLineModifier[]) {
-  const modExtra = modifiers.reduce((sum) => sum, 0);
-  return (price + modExtra) * quantity;
+function calcLineTotal(
+  basePrice: number,
+  quantity: number,
+  modifiers: CartLineModifier[],
+  unitPrice?: number
+) {
+  const perUnit =
+    unitPrice ??
+    basePrice + modifiers.reduce((sum, m) => sum + (m.extraPrice ?? 0), 0);
+  return perUnit * quantity;
 }
 
 function lineId() {
@@ -55,13 +63,16 @@ export const useCart = create<CartState>()(
       deliveryQuote: null,
       notes: "",
 
-      addItem: (item, quantity, modifiers) => {
-        const lineTotal = calcLineTotal(item.price, quantity, modifiers);
+      addItem: (item, quantity, modifiers, unitPrice) => {
+        const perUnit =
+          unitPrice ??
+          item.price + modifiers.reduce((s, m) => s + (m.extraPrice ?? 0), 0);
+        const lineTotal = calcLineTotal(item.price, quantity, modifiers, perUnit);
         const line: CartLine = {
           id: lineId(),
           itemId: item.id,
           name: item.name,
-          price: item.price,
+          price: perUnit,
           quantity,
           modifiers,
           lineTotal,
@@ -80,7 +91,7 @@ export const useCart = create<CartState>()(
               ? {
                   ...l,
                   quantity,
-                  lineTotal: calcLineTotal(l.price, quantity, l.modifiers),
+                  lineTotal: calcLineTotal(l.price, quantity, l.modifiers, l.price),
                 }
               : l
           ),

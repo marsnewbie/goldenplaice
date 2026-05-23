@@ -18,5 +18,8 @@ export async function PUT(request: Request) {
 
   const { settings } = (await request.json()) as { settings: ShopSettings };
   await updateSettings(settings);
-  return NextResponse.json({ ok: true });
+  const { getShopCoordinates } = await import("@/lib/shop-location");
+  await getShopCoordinates();
+  const updated = await getSettings();
+  return NextResponse.json({ ok: true, settings: updated });
 }

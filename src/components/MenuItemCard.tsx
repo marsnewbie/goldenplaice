@@ -2,16 +2,21 @@
 
 import { Plus } from "lucide-react";
 import { useState } from "react";
-import type { MenuItem } from "@/types";
+import type { MenuItem, ModifierGroup } from "@/types";
 import { formatPrice } from "@/lib/utils";
+import { itemHasModifiers } from "@/lib/menu";
+import { useCart } from "@/store/cart";
 import { ItemCustomizer } from "./ItemCustomizer";
 
 interface Props {
   item: MenuItem;
+  modifierGroups: ModifierGroup[];
 }
 
-export function MenuItemCard({ item }: Props) {
+export function MenuItemCard({ item, modifierGroups }: Props) {
   const [customizing, setCustomizing] = useState(false);
+  const addItem = useCart((s) => s.addItem);
+  const hasOptions = itemHasModifiers(item, modifierGroups);
 
   if (!item.available) {
     return (
@@ -21,6 +26,15 @@ export function MenuItemCard({ item }: Props) {
       </div>
     );
   }
+
+  const quickAdd = () => {
+    if (hasOptions) {
+      setCustomizing(true);
+      return;
+    }
+    addItem(item, 1, []);
+    document.dispatchEvent(new CustomEvent("open-cart"));
+  };
 
   return (
     <>
@@ -33,19 +47,22 @@ export function MenuItemCard({ item }: Props) {
           {item.description && (
             <p className="mt-2 text-sm text-white/50">{item.description}</p>
           )}
+          {hasOptions && (
+            <p className="mt-2 text-xs text-brand-light">Customisable options available</p>
+          )}
         </div>
-        <button
-          type="button"
-          onClick={() => setCustomizing(true)}
-          className="btn-primary mt-4 w-full text-sm"
-        >
+        <button type="button" onClick={quickAdd} className="btn-primary mt-4 w-full text-sm">
           <Plus className="h-4 w-4" />
-          Add to basket
+          {hasOptions ? "Choose options" : "Add to basket"}
         </button>
       </div>
 
       {customizing && (
-        <ItemCustomizer item={item} onClose={() => setCustomizing(false)} />
+        <ItemCustomizer
+          item={item}
+          modifierGroups={modifierGroups}
+          onClose={() => setCustomizing(false)}
+        />
       )}
     </>
   );

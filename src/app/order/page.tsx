@@ -1,13 +1,17 @@
 import { MenuSection } from "@/components/MenuSection";
 import { OrderFulfillmentBar } from "@/components/OrderFulfillmentBar";
-import { getCategories, getMenuItems } from "@/lib/store";
+import { getCategories, getMenuItems, getModifierGroups } from "@/lib/store";
 
 export const metadata = {
   title: "Order Online",
 };
 
 export default async function OrderPage() {
-  const [categories, items] = await Promise.all([getCategories(), getMenuItems()]);
+  const [categories, items, modifierGroups] = await Promise.all([
+    getCategories(),
+    getMenuItems(),
+    getModifierGroups(),
+  ]);
 
   return (
     <div className="mx-auto max-w-6xl px-4 py-8">
@@ -31,6 +35,7 @@ export default async function OrderPage() {
               title={cat.name}
               description={cat.description}
               items={catItems}
+              modifierGroups={modifierGroups}
             />
           );
         })}
