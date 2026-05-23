@@ -2,6 +2,8 @@ import { MenuSection } from "@/components/MenuSection";
 import { OrderFulfillmentBar } from "@/components/OrderFulfillmentBar";
 import { getCategories, getMenuItems, getModifierGroups } from "@/lib/store";
 
+export const dynamic = "force-dynamic";
+
 export const metadata = {
   title: "Order Online",
 };

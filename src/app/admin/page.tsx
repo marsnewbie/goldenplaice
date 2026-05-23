@@ -185,6 +185,11 @@ export default function AdminPage() {
         </div>
       </div>
 
+      <p className="mb-4 rounded-lg bg-green-500/10 px-4 py-2 text-xs text-green-300">
+        Menu & settings are saved to Supabase — changes appear on the website after save
+        (refresh /order if needed).
+      </p>
+
       {message && (
         <p className="mb-4 rounded-lg bg-brand-blue/20 px-4 py-2 text-sm text-brand-light">
           {message}

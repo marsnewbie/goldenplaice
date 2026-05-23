@@ -1,6 +1,7 @@
+import { revalidatePath } from "next/cache";
 import { NextResponse } from "next/server";
 import { isAdminAuthenticated } from "@/lib/auth";
-import { getCategories, getMenuItems, saveMenu } from "@/lib/store";
+import { getAllCategories, getMenuItems, saveMenu } from "@/lib/store";
 import type { MenuCategory, MenuItem, ModifierGroup } from "@/types";
 
 export async function GET() {
@@ -9,7 +10,7 @@ export async function GET() {
   }
   const { getModifierGroups } = await import("@/lib/store");
   const [categories, items, modifierGroups] = await Promise.all([
-    getCategories(),
+    getAllCategories(),
     getMenuItems(),
     getModifierGroups(),
   ]);
@@ -28,5 +29,8 @@ export async function PUT(request: Request) {
   };
 
   await saveMenu(categories, items, modifierGroups ?? []);
+  revalidatePath("/");
+  revalidatePath("/order");
+  revalidatePath("/contact");
   return NextResponse.json({ ok: true });
 }

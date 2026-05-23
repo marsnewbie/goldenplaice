@@ -5,8 +5,8 @@
     "email": "orders@goldenplaice.co.uk",
     "address": "2 Rhodes Moorhouse Way, Longhedge, Salisbury",
     "postcode": "SP4 6SA",
-    "lat": 51.1652,
-    "lng": -1.7534,
+    "lat": 51.105174,
+    "lng": -1.792948,
     "deliveryTiers": [
       {
         "maxMiles": 1,
@@ -1210,6 +1210,86 @@
       "name": "Water (500ml)",
       "price": 1.3,
       "available": true
+    }
+  ],
+  "modifierGroups": [
+    {
+      "id": "grp-sauce",
+      "name": "Choose your sauce",
+      "type": "single",
+      "required": true,
+      "options": [
+        {
+          "id": "ketchup",
+          "label": "Ketchup"
+        },
+        {
+          "id": "mayo",
+          "label": "Mayonnaise"
+        },
+        {
+          "id": "bbq",
+          "label": "BBQ Sauce"
+        },
+        {
+          "id": "curry",
+          "label": "Curry Sauce"
+        },
+        {
+          "id": "gravy",
+          "label": "Gravy"
+        },
+        {
+          "id": "no-sauce",
+          "label": "No sauce"
+        }
+      ]
+    },
+    {
+      "id": "grp-salad",
+      "name": "Salad",
+      "type": "single",
+      "required": false,
+      "options": [
+        {
+          "id": "lettuce",
+          "label": "Lettuce"
+        },
+        {
+          "id": "tomato",
+          "label": "Tomato"
+        },
+        {
+          "id": "onion",
+          "label": "Onion"
+        },
+        {
+          "id": "no-salad",
+          "label": "No salad"
+        }
+      ]
+    },
+    {
+      "id": "grp-pie-options",
+      "name": "Pie options",
+      "type": "multi",
+      "required": false,
+      "minSelections": 0,
+      "maxSelections": 3,
+      "options": [
+        {
+          "id": "no-onion",
+          "label": "No onion"
+        },
+        {
+          "id": "no-spicy",
+          "label": "No spicy"
+        },
+        {
+          "id": "with-sauce",
+          "label": "With sauce"
+        }
+      ]
     }
   ],
   "orders": [

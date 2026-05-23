@@ -1,3 +1,4 @@
+import { revalidatePath } from "next/cache";
 import { NextResponse } from "next/server";
 import { isAdminAuthenticated } from "@/lib/auth";
 import { getSettings, updateSettings } from "@/lib/store";
@@ -21,5 +22,8 @@ export async function PUT(request: Request) {
   const { getShopCoordinates } = await import("@/lib/shop-location");
   await getShopCoordinates();
   const updated = await getSettings();
+  revalidatePath("/");
+  revalidatePath("/order");
+  revalidatePath("/contact");
   return NextResponse.json({ ok: true, settings: updated });
 }

@@ -3,9 +3,10 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { CreditCard, Banknote, Loader2, User, UserPlus } from "lucide-react";
+import { CreditCard, Banknote, Loader2, User, UserPlus, AlertCircle } from "lucide-react";
 import { useCart } from "@/store/cart";
 import { formatPrice } from "@/lib/utils";
+import { CheckoutFulfillment, useCanPlaceOrder } from "@/components/CheckoutFulfillment";
 import type { PaymentMethod } from "@/types";
 
 type CheckoutMode = "guest" | "login" | "register";
@@ -23,6 +24,7 @@ export default function CheckoutPage() {
   const deliveryFee = useCart((s) => s.deliveryFee);
   const total = useCart((s) => s.total);
   const clearCart = useCart((s) => s.clearCart);
+  const canPlace = useCanPlaceOrder();
 
   const [mode, setMode] = useState<CheckoutMode>("guest");
   const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>("cash");
@@ -52,23 +54,28 @@ export default function CheckoutPage() {
     );
   }
 
-  const canDeliver =
-    fulfillment === "collection" ||
-    (deliveryQuote?.available && deliveryAddress.trim() && deliveryPostcode.trim());
-
   const placeOrder = async () => {
     setError("");
+
+    if (!canPlace.ok) {
+      setError(canPlace.reason || "Please complete delivery details");
+      return;
+    }
+
     if (!name.trim() || !phone.trim()) {
       setError("Please enter your name and phone number");
       return;
     }
-    if (fulfillment === "delivery" && !canDeliver) {
-      setError("Please check delivery postcode and enter your full address");
-      return;
-    }
-    if (mode !== "guest" && !email.trim()) {
-      setError("Please enter your email");
-      return;
+
+    if (mode === "login" || mode === "register") {
+      if (!email.trim()) {
+        setError("Please enter your email");
+        return;
+      }
+      if (!password.trim()) {
+        setError("Please enter your password");
+        return;
+      }
     }
 
     setLoading(true);
@@ -82,7 +89,6 @@ export default function CheckoutPage() {
         if (!regRes.ok) {
           const d = await regRes.json();
           setError(d.error || "Registration failed");
-          setLoading(false);
           return;
         }
       } else if (mode === "login") {
@@ -94,7 +100,6 @@ export default function CheckoutPage() {
         if (!loginRes.ok) {
           const d = await loginRes.json();
           setError(d.error || "Login failed");
-          setLoading(false);
           return;
         }
       }
@@ -121,7 +126,6 @@ export default function CheckoutPage() {
       const orderData = await orderRes.json();
       if (!orderRes.ok) {
         setError(orderData.error || "Could not place order");
-        setLoading(false);
         return;
       }
 
@@ -143,6 +147,8 @@ export default function CheckoutPage() {
   return (
     <div className="mx-auto max-w-2xl px-4 py-10">
       <h1 className="section-title mb-8">Checkout</h1>
+
+      <CheckoutFulfillment />
 
       <div className="card mb-6">
         <h2 className="mb-4 font-semibold text-brand-light">Order summary</h2>
@@ -172,9 +178,6 @@ export default function CheckoutPage() {
             <span className="text-brand-orange">{formatPrice(total())}</span>
           </div>
         </div>
-        <p className="mt-2 text-xs text-white/40 capitalize">
-          {fulfillment} · {fulfillment === "delivery" && deliveryPostcode}
-        </p>
       </div>
 
       <div className="card mb-6">
@@ -205,34 +208,81 @@ export default function CheckoutPage() {
 
         <div className="space-y-4">
           <div>
-            <label className="label" htmlFor="name">Full name *</label>
-            <input id="name" className="input" value={name} onChange={(e) => setName(e.target.value)} />
+            <label className="label" htmlFor="name">
+              Full name *
+            </label>
+            <input
+              id="name"
+              className="input"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+            />
           </div>
-          {mode !== "guest" && (
+          {(mode === "login" || mode === "register") && (
             <>
               <div>
-                <label className="label" htmlFor="email">Email *</label>
-                <input id="email" type="email" className="input" value={email} onChange={(e) => setEmail(e.target.value)} />
+                <label className="label" htmlFor="email">
+                  Email *
+                </label>
+                <input
+                  id="email"
+                  type="email"
+                  className="input"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                />
               </div>
               <div>
-                <label className="label" htmlFor="password">Password *</label>
-                <input id="password" type="password" className="input" value={password} onChange={(e) => setPassword(e.target.value)} />
+                <label className="label" htmlFor="password">
+                  Password *
+                </label>
+                <input
+                  id="password"
+                  type="password"
+                  className="input"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                />
               </div>
             </>
           )}
           <div>
-            <label className="label" htmlFor="phone">Phone *</label>
-            <input id="phone" type="tel" className="input" value={phone} onChange={(e) => setPhone(e.target.value)} />
+            <label className="label" htmlFor="phone">
+              Phone *
+            </label>
+            <input
+              id="phone"
+              type="tel"
+              className="input"
+              value={phone}
+              onChange={(e) => setPhone(e.target.value)}
+            />
           </div>
           {mode === "guest" && (
             <div>
-              <label className="label" htmlFor="guest-email">Email (optional)</label>
-              <input id="guest-email" type="email" className="input" value={email} onChange={(e) => setEmail(e.target.value)} />
+              <label className="label" htmlFor="guest-email">
+                Email (optional)
+              </label>
+              <input
+                id="guest-email"
+                type="email"
+                className="input"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+              />
             </div>
           )}
           <div>
-            <label className="label" htmlFor="notes">Order notes</label>
-            <textarea id="notes" className="input min-h-[80px]" value={notes} onChange={(e) => setNotes(e.target.value)} placeholder="Allergies, extra instructions..." />
+            <label className="label" htmlFor="notes">
+              Order notes
+            </label>
+            <textarea
+              id="notes"
+              className="input min-h-[80px]"
+              value={notes}
+              onChange={(e) => setNotes(e.target.value)}
+              placeholder="Allergies, extra instructions..."
+            />
           </div>
         </div>
       </div>
@@ -268,17 +318,18 @@ export default function CheckoutPage() {
             <CreditCard className="h-6 w-6 text-brand-orange" />
             <div className="text-left">
               <p className="font-semibold">Card</p>
-              <p className="text-xs text-white/50">Stripe gateway (coming soon)</p>
+              <p className="text-xs text-white/50">Stripe (coming soon)</p>
             </div>
           </button>
         </div>
-        {paymentMethod === "card" && (
-          <p className="mt-3 rounded-lg bg-brand-blue/10 px-4 py-2 text-xs text-brand-light">
-            Card payments will redirect to our secure payment partner once Stripe is connected.
-            Your order is saved either way.
-          </p>
-        )}
       </div>
+
+      {!canPlace.ok && (
+        <div className="mb-4 flex gap-2 rounded-lg bg-amber-500/10 px-4 py-3 text-sm text-amber-200">
+          <AlertCircle className="h-5 w-5 shrink-0" />
+          {canPlace.reason}
+        </div>
+      )}
 
       {error && (
         <p className="mb-4 rounded-lg bg-red-500/10 px-4 py-3 text-sm text-red-400">{error}</p>
@@ -287,8 +338,8 @@ export default function CheckoutPage() {
       <button
         type="button"
         onClick={placeOrder}
-        disabled={loading || !canDeliver}
-        className="btn-primary w-full text-lg"
+        disabled={loading}
+        className="btn-primary w-full text-lg disabled:opacity-60"
       >
         {loading ? (
           <>

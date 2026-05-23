@@ -84,7 +84,9 @@ export async function POST(request: Request) {
       stripeCheckoutUrl,
       message: "Order placed successfully",
     });
-  } catch {
-    return NextResponse.json({ error: "Failed to place order" }, { status: 500 });
+  } catch (e) {
+    console.error("Place order error:", e);
+    const msg = e instanceof Error ? e.message : "Failed to place order";
+    return NextResponse.json({ error: msg }, { status: 500 });
   }
 }

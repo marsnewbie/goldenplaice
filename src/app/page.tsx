@@ -4,6 +4,8 @@ import { Clock, MapPin, Phone, ShoppingBag, Truck } from "lucide-react";
 import { getSettings } from "@/lib/store";
 import { formatAllOpeningHours } from "@/lib/opening-hours";
 
+export const dynamic = "force-dynamic";
+
 export default async function HomePage() {
   const settings = await getSettings();
   const hours = formatAllOpeningHours(settings);

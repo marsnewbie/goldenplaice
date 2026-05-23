@@ -2,6 +2,8 @@ import { Clock, Mail, MapPin, Phone } from "lucide-react";
 import { getSettings } from "@/lib/store";
 import { formatAllOpeningHours } from "@/lib/opening-hours";
 
+export const dynamic = "force-dynamic";
+
 export const metadata = {
   title: "Contact Us",
 };
